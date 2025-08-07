@@ -1,0 +1,26 @@
+﻿[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "sdsfdssd",
+      "description": "sdfdsfsd"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "cat1",
+      "description": "d"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "cat2",
+      "description": "d2"
+    }
+  }
+]
