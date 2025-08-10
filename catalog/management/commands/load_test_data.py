@@ -13,7 +13,7 @@ class Command(BaseCommand):
         Category.objects.all().delete()
 
         self.stdout.write("Загрузка данных из фикстуры...")
-        # call_command('loaddata', 'categories.json')
+        call_command('loaddata', 'categories.json')
         call_command('loaddata', 'products.json')
 
         self.stdout.write(self.style.SUCCESS("Тестовые данные загружены из фикстуры"))
