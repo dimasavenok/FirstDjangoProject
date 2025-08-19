@@ -22,13 +22,13 @@ class PostDetailView(DetailView):
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         obj.views_count += 1
-        obj.save(update_fiels=["views_count"])
+        obj.save(update_fields=["views_count"])
 
 class PostCreateView(CreateView):
     model = BlogPost
     template_name = "blogapp/post_create.html"
     fields = ["title", "content", "preview", "is_publish"]
-    success_url = reverse_lazy("post_list")
+    success_url = reverse_lazy("blogapp:post_list")
 
 class PostUpdateView(UpdateView):
     model = BlogPost
@@ -36,10 +36,10 @@ class PostUpdateView(UpdateView):
     fields = ["title", "content", "preview", "is_publish"]
 
     def get_success_url(self):
-        return reverse("post_detail", kwargs={"pk": self.object.pk})
+        return reverse("blogapp:post_detail", kwargs={"pk": self.object.pk})
 
 class PostDeleteView(DetailView):
     model = BlogPost
     template_name = "blogapp/post_delete.html"
-    success_url = reverse_lazy("post_list")
+    success_url = reverse_lazy("blogapp:post_list")
 
