@@ -1,13 +1,15 @@
 {% extends "catalog/base.html" %}
-{% block title %}{{ post.title }} — Блог{% endblock %}
+
+
 {% block content %}
   <article class="mb-4">
     <h1 class="h3">{{ post.title }}</h1>
     <div class="text-secondary small mb-3">
       Дата: {{ post.created_at|date:"d.m.Y H:i" }} • Просмотры: {{ post.views_count }}
-      {% if not post.is_published %}
+    {% if not post.is_publish %}
         <span class="badge text-bg-warning ms-2">Черновик</span>
-      {% endif %}
+    {% endif %}
+
     </div>
 
     {% if post.preview %}
@@ -15,10 +17,7 @@
     {% endif %}
 
     <div class="content">
-      {# Если контент хранится как чистый текст — linebreaksbr.
-         Если там HTML из админки — используйте safe (осторожно с безопасностью!) #}
-      {{ post.content|linebreaksbr }}
-      {# или: {{ post.content|safe }} #}
+      {{ post.content }}
     </div>
   </article>
 
