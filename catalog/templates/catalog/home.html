@@ -9,6 +9,7 @@
 </div>
 
 <div class="container">
+    <a href="{% url 'catalog:product_create' %}" class="btn btn-success">Добавить продукт</a>
     <div class="row text-center">
         {% for product in products %}
         <div class="col-3">
@@ -23,6 +24,8 @@
                     <h1 class="card-title pricing-card-title">$ {{ product.price }}</h1>
                     <p>{{ product.description|truncatechars:100 }}</p>
                     <a href="{% url 'catalog:product_detail' product.pk %}">Подробнее</a>
+                    <a href="{% url 'catalog:product_edit' product.pk %}">Редактировать</a>
+                    <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger btn-sm">Удалить</a>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
