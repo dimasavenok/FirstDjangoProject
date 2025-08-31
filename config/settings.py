@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog',
     'blogapp',
+    'usersapp',
+
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+AUTH_USER_MODEL = 'usersapp.CustomUser'
+
+LOGIN_URL = 'usersapp:login'
