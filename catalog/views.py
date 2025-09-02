@@ -30,7 +30,7 @@ class ContactsView(TemplateView):
         return context
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     queryset = Product.objects.all()
     template_name = "catalog/product.html"
     context_object_name = "product"

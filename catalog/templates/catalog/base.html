@@ -16,7 +16,7 @@
         <a  href="{% url 'usersapp:login' %}">Вход</a>
         <a  href="{% url 'usersapp:register' %}">Регистрация</a>
     {% else %}
-        <p> {{ user.username }}</p>
+        <p> {{ user.email }}</p>
         <a  href="{% url 'usersapp:logout' %}">Выход</a>
     {% endif %}
 </div>
