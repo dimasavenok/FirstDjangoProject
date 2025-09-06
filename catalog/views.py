@@ -1,5 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -46,6 +48,12 @@ class ProductCreateView(LoginRequiredMixin,CreateView):
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:home")
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
@@ -65,3 +73,12 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         product = self.get_object()
         return product.owner == self.request.user
+
+@login_required
+def unpublish_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.user.has_perm("products.can_unpublish_product"):
+        product.status = "unpublished"
+        product.save()
+        return redirect("catalog:home")
+    return HttpResponseForbidden("У вас нет прав")

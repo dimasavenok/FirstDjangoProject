@@ -10,7 +10,7 @@ BANNED_WORDS = [
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "description", "category", "price", "image"]
+        fields = ["name", "description", "category", "status", "price", "image"]
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,11 +39,14 @@ class ProductForm(forms.ModelForm):
 
     def clean_image(self):
         image = self.cleaned_data.get("image")
-        if image:
-            if image.size > 5*1024*1024:
-                raise forms.ValidationError("Фото не должно превышать 5мб")
-            if not image.content_type in ["image/png", "image/jpeg"]:
-                raise forms.ValidationError("Допустимые форматы: jpeg/png")
-        return image
+        try:
+            if image:
+                if image.size > 5*1024*1024:
+                    raise forms.ValidationError("Фото не должно превышать 5мб")
+                if not image.content_type in ["image/png", "image/jpeg"]:
+                    raise forms.ValidationError("Допустимые форматы: jpeg/png")
+            return image
+        except Exception:
+            pass
 
 
