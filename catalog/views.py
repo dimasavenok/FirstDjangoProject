@@ -3,10 +3,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm
 from catalog.models import Product
+from catalog.services import get_products_by_category
 
 
 # Create your views here.
@@ -22,6 +26,17 @@ class HomeView(ListView):
         context["title"] = "Skystore"
         return context
 
+class ProductByCategoryView(View):
+    template_name = "catalog/home.html"
+
+    def get(self, request, category_id):
+        products = get_products_by_category(category_id)
+        context = {
+            "title":"Skystore",
+            "products": products
+        }
+        return render(request, self.template_name, context)
+
 
 class ContactsView(TemplateView):
     template_name = "catalog/contacts.html"
@@ -31,7 +46,7 @@ class ContactsView(TemplateView):
         context["title"] = "Skystore"
         return context
 
-
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ProductDetailView(LoginRequiredMixin, DetailView):
     queryset = Product.objects.all()
     template_name = "catalog/product.html"
@@ -72,7 +87,8 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         product = self.get_object()
-        return product.owner == self.request.user
+        return product.owner == self.request.user or self.request.user.groups.filter(name="Модератор продуктов").exists()
+
 
 @login_required
 def unpublish_product(request, pk):
