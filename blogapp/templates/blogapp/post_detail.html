@@ -1,0 +1,29 @@
+{% extends "catalog/base.html" %}
+
+
+{% block content %}
+  <article class="mb-4">
+    <h1 class="h3">{{ post.title }}</h1>
+    <div class="text-secondary small mb-3">
+      Дата: {{ post.created_at|date:"d.m.Y H:i" }} • Просмотры: {{ post.views_count }}
+    {% if not post.is_publish %}
+        <span class="badge text-bg-warning ms-2">Черновик</span>
+    {% endif %}
+
+    </div>
+
+    {% if post.preview %}
+      <img class="mb-3 rounded w-100" style="max-height:420px; object-fit:cover;" src="{{ post.preview.url }}" alt="{{ post.title }}">
+    {% endif %}
+
+    <div class="content">
+      {{ post.content }}
+    </div>
+  </article>
+
+  <div class="d-flex gap-2">
+    <a class="btn btn-secondary" href="{% url 'blogapp:post_list' %}">← К списку</a>
+    <a class="btn btn-primary" href="{% url 'blogapp:post_edit' post.pk %}">Редактировать</a>
+    <a class="btn btn-outline-danger" href="{% url 'blogapp:post_delete' post.pk %}">Удалить</a>
+  </div>
+{% endblock %}
